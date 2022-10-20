@@ -1,0 +1,11 @@
+1 seleccione todos los empledaos que no tengan jefes
+
+SELECT * employees WHERE reportsTo IS NULL
+
+2 seleccione todos los empleados que son jefes
+
+SELECT * FROM employees WHERE employeeNumber IN (SELECT DISTINCT reportsTo FROM employees WHERE reportsTo IS N)
+
+3 seleccine todos los empleados que no son jefes  
+
+SELECT * FROM employees WHERE employeeNumber NOT IN (SELECT DISTINCT reportsTo FROM employees WHERE reportsTo)
