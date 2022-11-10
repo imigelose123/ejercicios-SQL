@@ -80,3 +80,26 @@ WHERE ore.orderdate BETWEEN '2003-01-01' AND '2003-12-31'
 	de todos los "customers" cuyo "customerName" termine con "Inc.", cuyo "country" este en
     la lista ('USA', 'Germany', 'France', 'Spain') y cuyo "creditLimit" este entre 10200 y
     500100 ordenados por customerName de forma descendente */
+
+
+
+11 select todos los empelados de las oficinas de 'usa'
+
+SELECT 
+employees*, offices.country
+FRON 
+employees JHOIN offices ON employees.officeCode=office.officeCode
+WHERE 
+office.country= 'usa'
+
+12 seleccionar el monto total en ventas de los productos de la linea 'motorcycles'
+
+SELECT 
+SUM (payment.amount) AS total_ventas
+
+FROM 
+payment JOIN customers ON payment.customerNomber= cutomers.custumerNumber JOIN order ON customers.customerNumber=order.customerNumber JOIN orderdetail on orders.orderNumber=orderDetail.orderNumber JOIN products on orderdetail.productcode= products.productCode JOIN productline on products.productLine = productLines.productline
+
+WHERE
+productlines.productline"motorcycles" 
+
