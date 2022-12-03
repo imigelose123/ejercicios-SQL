@@ -103,3 +103,110 @@ payment JOIN customers ON payment.customerNomber= cutomers.custumerNumber JOIN o
 WHERE
 productlines.productline"motorcycles" 
 
+
+13 seleccionar todo los productos de la lenia 'trains' r=3
+
+
+
+14 selccionar todos los pagos realizados por 'mini wheels Co. R =3 
+	SELECT * FROM customers JOIN payments ON payments.customerNumber=customers.customerNumber	
+	WHERE customerName = "Mini wheels co."
+
+15 selccionar todos los pagos realizados 'Spain' r= 23
+	SELECT * FROM payments JOIN customers ON payments.customerNumber = customers.customerNumber
+	WHERE country = 'Spain';
+
+16 selecciomar todos los productos correspondientes a las ordenes de compra a las ordenes de compra realizadas el 2003 r= 1052
+	SELECT *
+	FROM orders JOIN orderdetails ON orders.orderNumber = orderdetails.orderNumber JOIN products.productCode = orderdetails.productCode
+	WHERE orderDate LIKE '2003%';
+	
+17 seleccionar todos los empleados de la oficinas ubicadas en 'USA' cullos jefes no esten en oficinas de 'USA'
+	SELECT *
+	FROM employees JOIN offices ON employees.officeCode = offices.officeCode
+	WHERE (employeeNumber NOT IN (SELECT DISTINCT reportsTo FROM employees WHERE reportsTo IS NOT NULL) AND country = 'USA')
+	AND (employeeNumber IN (SELECT DISTINCT reporsTo FROM employees WHERE reportsTo IS NOT NULL) AND country ! = 'USA');
+
+18 seleccionar los productos  que figuran en ordenes de compra del cliente como contacto apellido 'young'
+	SELECT productName, productVendor, productDescription, orderDate, contactLastName, contactFirstName
+	FROM products JOIN orderdetails ON products.productCode = orderdetails.productCode
+	JOIN orders ON oreders.orderNumber = orderdetails.orderNumber JOIN customers ON customers.customerNumber = orders.customerNumber
+	WHERE contactLastName = 'Young';
+	
+
+19 seleccionar las ordenes de compra donde aparece el producto denominado 'P-51-D Mustang'
+	SELECT productName, productLine, orderDate
+	FROM orders JOIN orderdetails ON orders.orderNumber = orderdetails.orderNumber
+	JOIN products ON orderdetails.productCode=products.productCode
+	WHERE productName="p-51-D Mustang"; 
+
+20 seleccioma las ordenes de compra de todos los productos de la linea 'Classic Cars'
+	SELECT *
+	FROM orders JOIN orderdetails ON orders.orderNumber=orderdetails.orderNumber
+	JOIN products ON orderdetails.productCode=products.productCode
+	WHERE productLine = "Classic Cars";	
+
+21 seleccionar las ordenes de compra reportadas por el empleado 'King Tom'
+
+
+22 seleccinar todos los pagos que no fueran realizados por 'Pitit Auto'
+	SELECT * FROM payments 
+	JOIN customers ON payments.customerNumber=customers.customerNumber
+	WHERE customerName NOT IN ("Petit Auto");
+
+23 seleccionar todos los empleados cuya oficina no este en 'usa'
+	SELECT * 
+	FROM employees JOIN office ON employees.officeCode = office.officeCode
+	WHERE country != 'USA'
+
+24 selecciona la cantidad de productos vendidos el '2003'
+	SELECT products JOIN orderdetails ON products.productCode = orderdetails.productCode
+	JOIN orders ON orders.orederNumber=orderdetails.orderNumber
+	JOIN customers ON customers.customerNumber = orders.customerNumber
+	JOIN payments ON payments.customerNumber = customers.customerNumber
+	WHERE paymentDate BETWEEN '2003-01-01' AND '2003-12-31';
+
+25 seleccionar el monto total  en ventas de los productos de la linea 'planes'
+	SELECT SUM (amount) AS total_ventas
+	FROM payments JOIN customers ON payments.customerNumber=customers.customerNumber
+	JOIN orders ON cutomers.customerNumber=orders.customerNumber
+	JOIN orderdetails ON orders.orderNumber=orderdetails.orderNumber
+	JOIN products ON orderdetails.productCode=products.productCode
+	JOIN productline ON products.productLine=productlines.productLine
+	WHERE products.productLine='planes';
+
+26 seleccionar el monto total en ventas de clientesde 'spain'
+	SELECT SUM (amount)
+	FROM payments JOIN customers ON payments.customerNumber = customers.customerNumber
+	WHERE country  = 'Spain'
+
+27 seleccionar la cantidad de empleados de las oficinas de japan
+	SELECT COUNT(*) AS CANTIDAD_EMPLEADOS
+	FROM employees  JOIN offices ON employees.officeCode = offices.officeCode
+	WHERE offices.country = 'Japan';
+
+28 seleccione los 5 productos mas vendidos del 2003
+	SELECT products.productName, COUNT(*) AS Total_productos
+	FROM products JOIN orderdetails ON products.productCode = orderdetails.productCode 
+	JOIN orders ON orders.orderNumber = orderdetails.orderNumber JOIN customers ON customers.customerNumber = orders.customerNumber
+	JOIN payments ON customers.customerNumber = payments.customerNumber
+	WHERE paymentDate BETWEEN '2003-01-01' AND '2003-12-31' CROUP BY products.productName ORDER BY COUNT(*) DESC LIMIT 5; 
+	
+29 seleccione los 5 empleados que mas productos vendieron en 2003
+	SELECT lastName, COUNT(*)AS Total_productos_vendidos
+	FROM products JOIN orderdetails ON products.productCOde = orderdetails.productCode
+	JOIN orders ON orders.orderNumber = orderdetails.orderNumber
+	JOIN customers ON customers .customerNumber = orders.customerNumber
+	JOIN employees ON employees.employeeNumber = customers.salesRepEmployeeNumber
+	Join payments ON customers.customerNumber = payments.customerNumber
+	WHERE paymentDate BETWEEN '2003-01-01' AND '2003-12-31' GROUP BY employees.lastName ORDER BY COUNT(*) DESC LIMIT 5;
+	
+
+30 seleccione los 5 mejores clientes del ano 2003
+	SELECT customerName, COUNT(*) AS Total_productos_comprados
+	FROM products Join orderdetails ON products.productCode = orderdetails.productCode
+	JOIN orders ON orders.orderNumber = orderdetails.orderNumber
+	JOIN customers ON customers.customerNumber = orderdetails.orderNumber
+	JOIN employees ON employees.employeeNumber = customers.salesRepEmployeeNumber
+	JOIN payments ON customers.customerNumber = payments.customerNumber
+	WHERE payments.paymentDate BETWEEN '2003-01-01' AND '2003-12-31' GROUP BY customers.customerName ORDER BY COUNT(*) DESC LIMIT 5 ;
